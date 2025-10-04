@@ -30,7 +30,7 @@
       const reference_id = `${idSantri}_${nama}_${wa}`.replace(/\s+/g, '');
 
       // Kirim ke Apps Script kamu untuk buat transaksi TryPay
-      const url = "https://script.google.com/macros/s/AKfycbyLhTWNpbHGyhFd88kmuJIEFs2TL0c2HdvyIjBODABl4TGZziEGRK_WIo4To6sn7Jku/exec";
+      const url = "https://script.google.com/macros/s/AKfycbx_PAmnwDVRUHPwAmWXzeojMltrcqZLWYrIfg_c4nIewYX-NSaIJxpLaeX2EYsrkXiq/exec";
       const params = new URLSearchParams({
         order_id: reference_id,
         nominal: nominal,
@@ -49,4 +49,5 @@
     });
   </script>
 </body>
+
 </html>
