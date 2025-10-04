@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Form Tes Pembayaran Santri - TryPay</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; font-size: 16px; }
+    button { background-color: #2e7d32; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Form Tes Pembayaran Santri</h2>
+  <form id="formTes">
+    <input type="text" id="nama" placeholder="Nama Pengirim" required>
+    <input type="text" id="wa" placeholder="Nomor WhatsApp" required>
+    <input type="text" id="idSantri" placeholder="ID Santri" required>
+    <input type="number" id="nominal" placeholder="Nominal (Rp)" required>
+    <button type="submit">Bayar Tes</button>
+  </form>
+
+  <script>
+    document.getElementById('formTes').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('nama').value.trim();
+      const wa = document.getElementById('wa').value.trim();
+      const idSantri = document.getElementById('idSantri').value.trim();
+      const nominal = parseInt(document.getElementById('nominal').value);
+      const reference_id = `${idSantri}_${nama}_${wa}`.replace(/\s+/g, '');
+
+      // Kirim ke Apps Script kamu untuk buat transaksi TryPay
+      const url = "https://script.google.com/macros/s/AKfycbyLhTWNpbHGyhFd88kmuJIEFs2TL0c2HdvyIjBODABl4TGZziEGRK_WIo4To6sn7Jku/exec";
+      const params = new URLSearchParams({
+        order_id: reference_id,
+        nominal: nominal,
+        nama: nama,
+        wa: wa
+      });
+
+      const res = await fetch(`${url}?${params.toString()}`);
+      const result = await res.json();
+
+      if (result.success && result.payment_url) {
+        window.open(result.payment_url, "_blank"); // Buka halaman pembayaran TryPay
+      } else {
+        alert("Gagal membuat transaksi TryPay.\n" + (result.message || "Silakan cek kembali data Anda."));
+      }
+    });
+  </script>
+</body>
+</html>
